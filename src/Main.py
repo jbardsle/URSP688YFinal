@@ -8,10 +8,10 @@ import os
 
 
 import sys
-sys.path.append('URSP688Final/src')
+sys.path.append('modules')
 
-from modules.clean_pcts import clean_pcts
-from modules.dist_decay import dist_decay
+from clean_pcts import clean_pcts
+from dist_decay import dist_decay
 
 OppSites = gpd.read_file('data/OpportunitySites2/OpportunitySites2.shp')
 
