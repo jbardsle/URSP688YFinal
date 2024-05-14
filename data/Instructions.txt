@@ -1,5 +1,5 @@
 
 Data for this project is available at the following link.
-Place the three three folders from the "Final_Project_Data" google drive folder
+Place the five folders from the "Final_Project_Data" google drive folder
 into the data directory in the repository.
 https://drive.google.com/drive/folders/1dq3Z_qR_tvfAro9VXOl4ycEV89awzQUc?usp=drive_link
