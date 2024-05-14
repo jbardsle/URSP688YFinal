@@ -1,3 +1,6 @@
+#General Note: The commented out sections below are an optional path to clean the original large data files
+#The code as it currently stands loads a pre-cleaned version that isn't as large.
+
 import pandas as pd
 import geopandas as gpd
 import os
@@ -5,21 +8,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 import shapely
 import os
-
-
 import sys
-sys.path.append('modules')
 
+#loads functions from the modules directory
+sys.path.append('modules')
 from clean_pcts import clean_pcts
 from dist_decay import dist_decay
 
+#load the opportunity sites
 OppSites = gpd.read_file('data/OpportunitySites2/OpportunitySites2.shp')
 
-# This begins the process to clean the original large data files. For loading speed,
-# the smaller versions are loaded below, and this section is commented out.
-# OppSites is small enough that it is loaded below.
+# #PGParcels and Demogs are not loaded here and are commented out in several operations below, because they are
+# #loaded later on in their smaller and pre-cleaned versions. 
 # PgParcels = gpd.read_file('data/Property_Info_Py (1)/Property_Info_Py.shp')
-
 # Demogs = gpd.read_file('data/PG_Blocks/PG_Blocks.shp')
 
 #Select the opportunity sites that have a 3 mile radius completely withing Prince George's County
@@ -45,13 +46,14 @@ ax = OppSitesBuffer.plot()
 OppSites.plot(ax=ax, color = 'red')
 
 # #Create a single shape to represent the maximum area of interest (3 miles from the three sites)
+# #This was used to create the smaller files that are loaded below.
 # MaxArea = OppSitesBuffer.unary_union
 # #Convert this polygon object to a geodataframe
 # MaxArea_series = gpd.GeoSeries(MaxArea)
 # MaxAreaGDF = gpd.GeoDataFrame(geometry = MaxArea_series, crs = 32618)
 
+# #Creates the smaller versions of the files by joining them with the buffer union shape
 # PgParcelsSmall = gpd.sjoin(PgParcels, MaxAreaGDF,how="inner", op='intersects')
-
 # DemogsSmall = gpd.sjoin(Demogs, MaxAreaGDF,how="inner", op='intersects')
 
 #Load PgParcelsSmall from file (rather than performing the above process)
@@ -75,17 +77,17 @@ ParcelDemogs = gpd.sjoin(PgParcelsSmall,DemogsSmall,how="inner", op = "intersect
 # Group by the parcel account number so that there is one record per parcel
 ParcelDemogsCln = ParcelDemogs[['ACCT_PRIMA','DUS','GEOID','Total_Pop','Hisp_Pop','Hisp_Pct','geometry']].groupby('ACCT_PRIMA').first()
 
-#Running the CleanPcts function
+#Running the CleanPcts function to remove nulls and make the percent Hispanic data into decimals
 clean_pcts(ParcelDemogsCln)
 
-#Running the dist_decay function with quadratic decline
+#Running the dist_decay function with quadratic decline to calculate the expected customers
 dist_decay(OppSites,ParcelDemogsCln,2)
 
-#creating a percent column
+#creating a percent column to show the percent Hispanic of the expected customers
 OppSites['PctHisp'] = (OppSites['HispCustomers'] / OppSites['Customers'])
 
 #checking the results
 OppSites.head()
 
-# Exporting the results to csv
+# # Optionally, exporting the results to csv
 # OppSites.to_csv('/content/drive/MyDrive/Colab Notebooks/FinalProject/Results/May10Exponential2.csv')
