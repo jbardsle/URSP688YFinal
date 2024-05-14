@@ -7,6 +7,7 @@ and parcel files provided by Prince George's County.
 The code produces estimates of customers/households within a three mile radius of origin sites within Prince George's County, and decays the number of customers based on distance. It also estimates the number of Hispanic customers. 
 
 Sources:
+
 NCSG Opportunity Sites:
 Courtesy/Proprietary
 
