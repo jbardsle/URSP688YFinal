@@ -4,6 +4,9 @@ Final Project for URSP688Y
 This repo uses Opportunity Site polygons provided by NCSG, census block files provided by ESRI Living Atlas,
 and parcel files provided by Prince George's County.
 
+PLEASE NOTE: A data directory is provided with an instructions file to download the data, which contains large
+files that cannot be uploaded to this repo.
+
 The code produces estimates of customers/households within a three mile radius of origin sites within Prince George's County, and decays the number of customers based on distance. It also estimates the number of Hispanic customers. 
 
 Sources:
